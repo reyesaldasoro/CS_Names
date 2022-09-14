@@ -11,7 +11,7 @@ basicURL                = 'https://openaccess.city.ac.uk/cgi/search/archive/adva
 names;
 numAcademics        = numel(CS_LastNames);
 combinedEntries     = zeros(numAcademics);
-for counterKW = 1:5%numAcademics
+for counterKW = 1:numAcademics
     disp(counterKW)
     %     spacePosition       = strfind(CS_Names{counterKW},' ');
     %     firstName           = CS_Names{counterKW}(1:spacePosition-1);
@@ -50,3 +50,11 @@ for counterKW = 1:5%numAcademics
         %combinedEntries(counterKW) = str2double(numEntriesPubMed);
     end
 end
+
+%%
+
+
+figure(2)
+methodGraph={'circle', 'force', 'layered', 'subspace', 'force3','subspace3'};
+G = graph(combinedEntries,CS_LastNames,'omitselfloops');
+    
