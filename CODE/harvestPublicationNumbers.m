@@ -6,17 +6,17 @@ close all
 %allF                    = '%5BAll%20Fields%5D'; % all fields code
 %allF2                    = '%5BMeSH%20Terms%5D'; % all fields code
 basicURL                = 'https://openaccess.city.ac.uk/cgi/search/archive/advanced?&creators_name=';
-%%
 % retrieve names
 names;
 numAcademics        = numel(CS_LastNames);
 combinedEntries     = zeros(numAcademics);
+%% Run double loop to find numbers
 for counterKW = 1:numAcademics
     disp(counterKW)
     %     spacePosition       = strfind(CS_Names{counterKW},' ');
     %     firstName           = CS_Names{counterKW}(1:spacePosition-1);
     %     lastName            = CS_Names{counterKW}(spacePosition+1:end);
-    for counterKW2 = counterKW   %:numAcademics
+    for counterKW2 = counterKW:numAcademics
         %         spacePosition2       = strfind(CS_Names{counterKW2},' ');
         %         firstName2           = CS_Names{counterKW2}(1:spacePosition2-1);
         %         lastName2            = CS_Names{counterKW2}(spacePosition2+1:end);
@@ -25,7 +25,7 @@ for counterKW = 1:numAcademics
             urlAddress                          = strcat(basicURL,strcat(strrep(CS_LastNames{counterKW},' ','+')));
         else
 %            urlAddress                          = strcat(basicURL,strcat(strrep(lastNames{counterKW},' ','+'),'+',strrep(lastNames{counterKW2},' ','+')));
-            urlAddress                          = strcat(basicURL,strcat('%28',strrep(lastNames2{counterKW},' ','+'),'%5BAuthor%5D%29+AND+%28',strrep(lastNames2{counterKW2},' ','+'),+'%5BAuthor%5D%29'));
+            urlAddress                          = strcat(basicURL,strcat(strrep(CS_LastNames{counterKW},' ','+'),'+',strrep(CS_LastNames{counterKW2},' ','+')));
 %https://pubmed.ncbi.nlm.nih.gov/?term=%28Moore+N+%5BAuthor%5D%29+AND+%28McEntee+M+%5BAuthor%5D%29&sort=pubdate&size=50
         end
         PubMedURL                           = urlread(urlAddress);
@@ -54,7 +54,17 @@ end
 %%
 
 
-figure(2)
+figure
 methodGraph={'circle', 'force', 'layered', 'subspace', 'force3','subspace3'};
-G = graph(combinedEntries,CS_LastNames,'omitselfloops');
+G = graph(combinedEntries,CS_Names,'omitselfloops');
     
+
+LWidths         = (9*(log10(1+G.Edges.Weight)))/4;
+h1= plot(G,'LineWidth',LWidths);
+layout(h1,methodGraph{1})
+
+h1.MarkerSize   = diag(0.10795*combinedEntries+2);
+
+h1.NodeFontSize = 9;
+
+h1.NodeColor    = codeColour(reorderN,:);
