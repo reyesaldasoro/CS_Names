@@ -67,4 +67,4 @@ h1.MarkerSize   = diag(0.10795*combinedEntries+2);
 
 h1.NodeFontSize = 9;
 
-h1.NodeColor    = codeColour(reorderN,:);
+%h1.NodeColor    = codeColour(reorderN,:);
